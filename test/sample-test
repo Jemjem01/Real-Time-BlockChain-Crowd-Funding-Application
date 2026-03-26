@@ -1,0 +1,54 @@
+const { expect } = require("chai");
+const { ethers } = require("hardhat");
+
+
+describe("Greeter", function () {
+    it("Should return the new greeting once it's changed", async function () {
+        const Greeter = await ethers.getContractFactory("Greeter");
+        const greeter = await Greeter.deploy("Hello, world!");
+
+        await greeter.waitForDeployment(); // Use waitForDeployment for modern ethers.js
+
+        expect(await greeter.greet()).to.equal("Hello, world!");
+
+        const setGreetingTx = await greeter.setGreeting("Hola, mundo!");
+        // wait until the transaction is mined
+        await setGreetingTx.wait();
+
+        expect(await greeter.greet()).to.equal("Hola, mundo!");
+    });
+});
+
+
+
+
+describe("CrowdTank", function () {
+    // This test ensures the new variable correctly tracks the count
+    it("Should track totalProjectsCreated correctly after multiple creations", async function () {
+        // Get the contract factory (the blueprint for your contract)
+        const CrowdTank = await ethers.getContractFactory("CrowdTank");
+        // Deploy a new instance of the contract
+        const crowdTank = await CrowdTank.deploy();
+
+        await crowdTank.waitForDeployment(); // Wait for deployment to finish
+
+        // 1. Check initial count: Should be 0 before any project is created
+        let initialCount = await crowdTank.totalProjectsCreated();
+        expect(initialCount).to.equal(0);
+
+        // 2. Create the first project (using dummy arguments)
+        // Note: ethers.parseEther("100") is used to convert the goal to Wei, the smallest unit
+        await crowdTank.createProject("Project 1", "Dsc 1", ethers.parseEther("100"), 3600);
+
+        // 3. Check count after 1 project: Should be 1
+        let countAfterOne = await crowdTank.totalProjectsCreated();
+        expect(countAfterOne).to.equal(1);
+
+        // 4. Create the second project
+        await crowdTank.createProject("Project 2", "Dsc 2", ethers.parseEther("200"), 7200);
+
+        // 5. Check count after 2 projects: Should be 2
+        let finalCount = await crowdTank.totalProjectsCreated();
+        expect(finalCount).to.equal(2);
+    });
+});
