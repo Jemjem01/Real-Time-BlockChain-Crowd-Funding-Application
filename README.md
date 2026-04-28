@@ -31,5 +31,9 @@ solidity documentation - https://docs.soliditylang.org/en/v0.8.25/
 
 Deployment Information - 0x95aAcb75Cc96CDCAe5A42edeA06452D79b61088a
 
+Contract Address - 0x95aAcb75Cc96CDCAe5A42edeA06452D79b61088a
+
+Live Explorer - https://sepolia.etherscan.io/address/0x95aAcb75Cc96CDCAe5A42edeA06452D79b61088a#code
+
 
 
